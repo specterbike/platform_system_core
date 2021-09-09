@@ -962,7 +962,13 @@ static void property_derive_build_display_id() {
             build_display_id += GetProperty("ro.build.keys", UNKNOWN);
         }
     } else {
-            build_display_id = GetProperty("ro.product.name", UNKNOWN);
+            //larkin modify msm8937 to qcm2150 start
+            std::string product_number = GetProperty("ro.product.name", UNKNOWN);
+            if(product_number == "msm8937_32"){
+                product_number = "qcm2150_32";
+            }
+            build_display_id += product_number;
+            //larkin modify msm8937 to qcm2150 start
             build_display_id += '-';
             build_display_id += GetProperty("ro.build.type", UNKNOWN);
             build_display_id += ' ';

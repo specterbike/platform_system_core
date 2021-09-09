@@ -425,7 +425,16 @@ bool IsLegalPropertyName(const std::string& name) {
 
     return true;
 }
-
+bool global_bootmode() {
+    std::string cmdline;
+    LOG(INFO) << "global_bootmode";
+    android::base::ReadFileToString("/proc/cmdline", &cmdline);
+    if (cmdline.find("ffbm-") != std::string::npos ){
+        LOG(INFO) << "global_bootmode ffbm";
+        return true;
+    }
+    return false;
+}
 static void InitAborter(const char* abort_message) {
     // When init forks, it continues to use this aborter for LOG(FATAL), but we want children to
     // simply abort instead of trying to reboot the system.

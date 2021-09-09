@@ -344,6 +344,7 @@ on late-init
     trigger load_persist_props_action
 
     # Now we can start zygote for devices with file based encryption
+    stop zygote_mmi
     trigger zygote-start
 
     # Remove a file to wake up anything waiting for firmware.
@@ -653,6 +654,13 @@ on zygote-start && property:ro.crypto.state=encrypted && property:ro.crypto.type
     start netd
     start zygote
     start zygote_secondary
+
+on zygote-start && property:ro.bootmode=ffbm-01
+    # A/B update verifier that marks a successful boot.
+    exec_start update_verifier_nonencrypted
+    start netd
+    stop zygote
+    start zygote_mmi
 
 on boot
     # basic network init

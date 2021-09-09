@@ -430,6 +430,11 @@ void SelinuxInitialize() {
 
     bool kernel_enforcing = (security_getenforce() == 1);
     bool is_enforcing = IsEnforcing();
+	if(global_bootmode()){
+		is_enforcing=false;
+		security_setenforce(is_enforcing);
+		LOG(INFO) << "FFBM set SELinux false"<< kernel_enforcing;
+	}
     if (kernel_enforcing != is_enforcing) {
         if (security_setenforce(is_enforcing)) {
             PLOG(FATAL) << "security_setenforce(%s) failed" << (is_enforcing ? "true" : "false");
